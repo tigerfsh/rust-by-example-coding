@@ -237,6 +237,28 @@ fn main() {
     for n in (0..).take_while(|&x| x < 11) {
         println!("{}", n);
     }
+
+    // diverging functions 分叉函数，（流程控制）
+    // return nothing 
+    let _a: () = some_fn(); // return unit
+    println!("This function returns and you can see this line.");
+
+    // panic! 
+    // loop {}
+    // exit()
+    // ...
+    // let _a = std::process::exit(1);
+    // let _b = loop {
+    // };
+    // let _c = panic!("this is a panic");
+
+}
+
+fn some_fn() {
+    ()
+}
+fn foo() -> ! {
+    panic!("This call never returns.");
 }
 
 fn is_odd(n: u32) -> bool {
