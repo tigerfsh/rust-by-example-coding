@@ -107,6 +107,9 @@ impl Blue for BlueJay {}
 fn red<T: Red>(_: &T) -> &'static str {"red"}
 fn blue<T: Blue>(_: &T) -> &'static str {"blue"}
 
+// trait 继承，冒号后面的是父trait，如果是多个trait则用加号相连
+trait MyPrint: Debug {}
+
 fn main() {
     // Generics
     let _s = Single(A);
