@@ -1,3 +1,13 @@
+// decode_code 
+fn used_function() {}
+
+#[allow(dead_code)]
+fn unused_function() {}
+
+#[allow(dead_code)]
+fn noisy_unused_function() {}
+
+// cfg
 #[cfg(target_os = "linux")]
 fn are_you_on_linux() {
     println!("You are running linux!");
@@ -9,6 +19,10 @@ fn are_you_on_linux() {
 }
 
 fn main() {
+    // dead_code 
+    used_function();
+
+    // cfg
     are_you_on_linux();
     println!("Are you sure?");
     if cfg!(target_os = "linux") {
