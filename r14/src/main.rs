@@ -110,6 +110,12 @@ fn blue<T: Blue>(_: &T) -> &'static str {"blue"}
 // trait 继承，冒号后面的是父trait，如果是多个trait则用加号相连
 trait MyPrint: Debug {}
 
+// usage of `impl trait`
+fn ff(obj: impl Red) -> impl Blue{
+    let b = BlueJay;
+    b
+}
+
 fn main() {
     // Generics
     let _s = Single(A);
