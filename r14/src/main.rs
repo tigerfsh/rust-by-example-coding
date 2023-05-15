@@ -51,6 +51,9 @@ impl<T> GenVal<T> {
 struct Empty;
 struct Null;
 
+struct AA;
+struct BB;
+
 trait DoubleDrop<T> {
     fn double_drop(self, _: T);
 }
@@ -119,6 +122,12 @@ fn main() {
     let null = Null;
 
     empty.double_drop(null);
+
+    // 二者的所有权转移到内部，函数调用结束，这两个变量都不能再使用
+    let aa = AA;
+    let bb = BB;
+
+    aa.double_drop(bb);
 
     
     // bounds
