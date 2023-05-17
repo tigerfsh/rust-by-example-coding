@@ -239,8 +239,18 @@ fn difference<C: Contains>(container: &C) -> i32 {
 struct PhantomTuple<A, B>(A, PhantomData<B>);
 
 #[derive(PartialEq)]
-struct PhantomStruct<A, B> {first: A, phantom: PhantomData<B>};
+struct PhantomStruct<A, B> {first: A, phantom: PhantomData<B>}
 
+
+// unit clarification
+// TODO
+
+// RAII
+fn create_box() {
+    let _box1 = Box::new(3i32);
+
+    // `_box1` is destroyed here, and memory gets freed
+}
 
 fn main() {
     // Generics
@@ -345,6 +355,24 @@ fn main() {
 
     let _struct1: PhantomStruct<char, f32> = PhantomStruct { first: 'Q', phantom: PhantomData };
     let _struct2: PhantomStruct<char, f64> = PhantomStruct { first: 'Q', phantom: PhantomData };
-    
 
+    // RAII
+    // Allocate an integer on the heap
+    let _box2 = Box::new(5i32);
+
+    // A nested scope:
+    {
+        // Allocate an integer on the heap
+        let _box3 = Box::new(4i32);
+
+        // `_box3` is destroyed here, and memory gets freed
+    }
+
+    // Creating lots of boxes just for fun
+    // There's no need to manually free memory!
+    for _ in 0u32..1_000 {
+        create_box();
+    }
+
+    // `_box2` is destroyed here, and memory gets freed
 }
