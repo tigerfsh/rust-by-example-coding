@@ -252,6 +252,14 @@ fn create_box() {
     // `_box1` is destroyed here, and memory gets freed
 }
 
+// Destructor
+struct ToDrop;
+
+impl Drop for ToDrop {
+    fn drop(&mut self) {
+        println!("ToDrop is being dropped");
+    }
+}
 fn main() {
     // Generics
     let _s = Single(A);
@@ -375,4 +383,9 @@ fn main() {
     }
 
     // `_box2` is destroyed here, and memory gets freed
+
+    // Destructor
+    let x = ToDrop;
+    println!("Made a ToDrop!");
+
 }
