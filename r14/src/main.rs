@@ -171,6 +171,37 @@ impl Days {
 fn old_enough(age: &Years) -> bool {
     age.0 >= 18
 }
+
+// associated types 
+struct Container(i32, i32);
+
+trait Contains<A, B> {
+    fn contains(&self, _: &A, _: &B) -> bool;
+    fn first(&self) -> i32;
+    fn last(&self) -> i32;
+}
+
+impl Contains<i32, i32> for Container {
+    fn contains(&self, number_1: &i32, number_2: &i32) -> bool {
+        (&self.0 == number_1) && (&self.1 == number_2) 
+    }
+
+    fn first(&self) -> i32 {
+        self.0 
+    }
+
+    fn last(&self) -> i32 {
+        self.1
+    }
+}
+
+fn difference<A, B, C>(container: &C) -> i32 
+where
+C: Contains<A, B>
+{
+    container.last() - container.first()
+}
+
 fn main() {
     // Generics
     let _s = Single(A);
@@ -254,8 +285,17 @@ fn main() {
     let years = Years(42);
     let years_as_primitive_1 = years.0;
     println!("years_as_primitive_1: {}", years_as_primitive_1);
-    
+
     let Years(val) = years;
     println!("val: {}", val);
 
+    // associated types 
+    let number_1 = 3;
+    let number_2 = 10;
+    let container = Container(number_1, number_2);
+    println!("{}", container.contains(&number_1, &number_2));
+
+    println!("first: {}", container.first());
+    println!("last: {}", container.last());
+    println!("the diffdrence is {}", difference(&container));
 }
