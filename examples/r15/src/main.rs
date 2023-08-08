@@ -336,6 +336,11 @@ impl<'a> Default for BorrowedX<'a> {
 }
 
 // 15.4.6 
+/*
+    T: 'a: All references in T must outlive lifetime 'a.
+    T: Trait + 'a: Type T must implement trait Trait and all references in T must outlive 'a.
+    说明：`all references in T`，这个T可能是结构体，所以出现了这样的说法。
+*/
 #[derive(Debug)]
 struct Ref<'a, T: 'a>(&'a T);
 
