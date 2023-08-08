@@ -1,5 +1,7 @@
 // RAII
 
+use std::fmt::Debug;
+
 // raii.rs
 fn create_box() {
     // Allocate an integer on the heap
@@ -190,6 +192,189 @@ fn main() {
     }
 
     println!("tuple is {:?}", mutable_tuple);
+
+    // 15.4 
+    // 15.4.3 
+    let mut owner = Owner(18);
+    owner.add_one();
+    owner.print();
+
+    // 15.4.5 
+    let b: BorrowedX = Default::default();
+    println!("b is {:?}", b);
+
+    // 15.4.6 
+    let x = 7;
+    let ref_x = Ref(&x);
+
+    print_ref(&ref_x);
+    print_bounds(ref_x);
+
+    // 15.4.7
+    let first = 2;
+    {
+        let second = 3;
+        println!("{}", multiply(&first, &second));
+        println!("{} is the first", choose_first(&first, &second));
+
+    }
+
+    // 15.4.8
+    // static 
+    // Reference lifetime 
+    // As a reference lifetime 'static indicates that the data pointed to by the reference lives for the entire lifetime of the running program. It can still be coerced to a shorter lifetime.
+    {
+        let static_string = "I am in read-only memory";
+        println!("static_string: {}", static_string);
+    }
+
+    {
+        let lifetime_num = 9;
+        let coerced_static = coerce_static(&lifetime_num);
+        println!("coerced_static: {}", coerced_static);
+
+    }
+
+    println!("NUM: {}", NUM);
+
+    // Trait bound 
+    /*
+    As a trait bound, it means the type does not contain any non-static references. Eg. the receiver can hold on to the type for as long as they want and it will never become invalid until they drop it.
+
+    It's important to understand this means that any owned data always passes a 'static lifetime bound, but a reference to that owned data generally does not:
+
+    */
+
+    // i is owned and contains no references, thus it's 'static:
+    let i = 5;
+    print_it(i);
+
+    // oops, &i only has the lifetime defined by the scope of
+    // main(), so it's not 'static:
+    // print_it(&i); // error 
+
+}
+static NUM: i32 = 18;
+
+// 15.4.1 
+// fn failed_borrow<'a>() {
+//     let _x = 12;
+//     let y: &'a i32 = &_x;
+//     // Attempting to use the lifetime `'a` as an explicit type annotation 
+//     // inside the function will fail because the lifetime of `&_x` is shorter
+//     // than that of `y`. A short lifetime cannot be coerced into a longer one.
+
+// }
+fn longer_str<'a>(a: &'a str, b: &'a str) -> &'a str {
+    if a.len() > b.len() {
+        return a
+    }
+    b 
+}
+
+// 15.4.2 
+// One input reference with lifetime `'a` which must live
+// at least as long as the function.
+fn print_one<'a>(x: &'a i32) {
+    println!("print_one: x is {}", x);
+}
+
+fn add_one<'a>(x: &'a mut i32) {
+    *x += 1;
+}
+
+// Multiple elements with different lifetimes. In this case, it
+// would be fine for both to have the same lifetime `'a`, but
+// in more complex cases, different lifetimes may be required.
+fn print_multi<'a, 'b>(x: &'a i32, y: &'b i32) {
+    println!("print_multi: x is {}, y is {}", x, y);
+}
+
+fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {x}
+
+// 15.4.3 
+struct Owner(i32);
+
+impl Owner {
+    fn add_one<'a>(&'a mut self) {
+        self.0 += 1;
+    }
+
+    fn print<'a >(&'a self) {
+        println!("print: {}", self.0);
+    }
+}
+
+// 15.4.4 
+#[derive(Debug)]
+struct BorrowedItem<'a>(&'a i32);
+
+#[derive(Debug)]
+struct NamedBorrowed<'a> {
+    x: &'a i32,
+    y: &'a i32,
+}
+
+#[derive(Debug)]
+enum Either<'a> {
+    Num(i32),
+    Ref(&'a i32),
+}
+
+// 15.4.5
+#[derive(Debug)]
+struct BorrowedX<'a> {
+    x: &'a i32,
+}
+
+impl<'a> Default for BorrowedX<'a> {
+    fn default() -> Self {
+        Self { x: &10 }
+    }
+}
+
+// 15.4.6 
+#[derive(Debug)]
+struct Ref<'a, T: 'a>(&'a T);
+
+fn print_bounds<T>(t: T)
+where
+T: Debug 
+{
+    println!("print_bounds: t is {:?}", t);
+}
+
+fn print_ref<'a, T>(t: &'a T) 
+where 
+T: Debug + 'a 
+{
+    println!("print_ref: t is {:?}", t);
+}
+
+fn print_ref_v2<T>(t: &T) 
+where 
+T: Debug
+{
+    println!("print_ref_v2: t is {:?}", t);
+}
+
+fn multiply<'a>(first: &'a i32, second: &'a i32) -> i32 {
+    first * second
+}
+
+// `<'a: 'b, 'b>` reads as lifetime `'a` is at least as long as `'b`.
+// Here, we take in an `&'a i32` and return a `&'b i32` as a result of coercion.
+fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
+    first 
+}
+
+// 15.4.8 
+fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
+    &NUM
+}
+
+fn print_it(input: impl Debug + 'static) {
+    println!("static value passed in is: {:?}", input);
 
 }
 
