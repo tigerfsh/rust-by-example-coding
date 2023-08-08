@@ -253,6 +253,8 @@ fn main() {
     // main(), so it's not 'static:
     // print_it(&i); // error 
 
+    print_it(&NUM);
+
 }
 static NUM: i32 = 18;
 
@@ -374,8 +376,8 @@ fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
 }
 
 fn print_it(input: impl Debug + 'static) {
+    // impl: 'static, this means the type does not contain any non-static references.
     println!("static value passed in is: {:?}", input);
-
 }
 
 // 15.3 
