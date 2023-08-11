@@ -149,6 +149,7 @@ fn main() {
     // Eq, PartialEq
     // pub trait Eq: PartialEq<Self> {},  Eq implies PartialEq, and has no extra methods.
     // Note that the derive strategy requires all fields are Eq, which isn’t always desired.
+    #[derive(Clone, Copy)]
     enum BookFormat {
         PaperBack,
         Hardback,
@@ -199,10 +200,10 @@ fn main() {
     // Clone vs Copy 
     // https://doc.rust-lang.org/core/marker/trait.Copy.html
 
-    // TODO 不使用#[derive(Copy, Clone)]，手动实现Copy, Clone 
+    // 不使用#[derive(Copy, Clone)]，手动实现Copy, Clone 
 
     impl Copy for Book {}
-    
+
     impl Clone for Book {
         fn clone(&self) -> Self {
             *self
