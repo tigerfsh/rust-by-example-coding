@@ -201,12 +201,14 @@ fn main() {
 
     // TODO 不使用#[derive(Copy, Clone)]，手动实现Copy, Clone 
 
+    impl Copy for Book {}
+    
     impl Clone for Book {
         fn clone(&self) -> Self {
             *self
         }
     }
-    
+
     struct MyOtherObject {
         test: u8,
     }
