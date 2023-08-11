@@ -201,6 +201,23 @@ fn main() {
 
     // TODO 不使用#[derive(Copy, Clone)]，手动实现Copy, Clone 
 
+    impl Clone for Book {
+        fn clone(&self) -> Self {
+            *self
+        }
+    }
+    
+    struct MyOtherObject {
+        test: u8,
+    }
+
+    impl Copy for MyOtherObject {}
+
+    impl Clone for MyOtherObject {
+        fn clone(&self) -> Self {
+            *self
+        }
+    }
 
 }
 
