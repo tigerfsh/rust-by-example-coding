@@ -200,6 +200,19 @@ fn main() {
     // https://doc.rust-lang.org/core/marker/trait.Copy.html
 
     // TODO 不使用#[derive(Copy, Clone)]，手动实现Copy, Clone 
-    
 
+
+}
+
+// supertrait 
+trait MySuperTrait1 {
+    fn my_super_method1(&self);
+}
+
+trait MySuperTrait2 {
+    fn my_super_method2(&self);
+}
+
+trait MyTrait: MySuperTrait1 + MySuperTrait2 {
+    fn my_method(&self);
 }
