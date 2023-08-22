@@ -328,10 +328,10 @@ fn main() {
 
     // let-else
     // The scope of name bindings is the main thing that makes this different from match or if let-else expressions.
-    
+
     assert_eq!(get_count_item("3 chairs"), (3, "chairs"));
 
-    // while let 
+    // while let
     let mut optional = Some(0);
 
     loop {
@@ -342,10 +342,12 @@ fn main() {
                     optional = None;
                 } else {
                     println!("i is {:?}. try again", i);
-                    optional = Some(i+1);
+                    optional = Some(i + 1);
                 }
-            },
-            _ => {break;}
+            }
+            _ => {
+                break;
+            }
         }
     }
 
@@ -356,9 +358,8 @@ fn main() {
             optional = None;
         } else {
             println!("i is {}, try again", i);
-            optional = Some(i+1);
+            optional = Some(i + 1);
         }
-
     }
 }
 

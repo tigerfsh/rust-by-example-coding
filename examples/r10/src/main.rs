@@ -27,10 +27,9 @@ mod my_mod {
         pub(in crate::my_mod) fn public_function_in_my_mod() {
             println!("my_mod::nested::public_function_in_my_mod()");
             public_function_in_nested();
-            
         }
-        
-        // <=> private 
+
+        // <=> private
         pub(self) fn public_function_in_nested() {
             println!("called my_mod::nested::public_function_in_nested()");
         }
@@ -43,7 +42,6 @@ mod my_mod {
     pub fn call_public_function_in_my_mod() {
         nested::public_function_in_my_mod();
         nested::public_function_in_super_mod();
-        
     }
 
     pub(crate) fn public_function_in_create() {
@@ -52,12 +50,12 @@ mod my_mod {
 
     mod private_nested {
         #[allow(dead_code)]
-        pub fn function(){
+        pub fn function() {
             println!("my_mod::private_nested::function()");
         }
 
         #[allow(dead_code)]
-        pub(crate) fn restricted_function(){
+        pub(crate) fn restricted_function() {
             println!("called my_mod::private_nested::restricted_function()");
         }
     }
@@ -67,7 +65,7 @@ fn function() {
     println!("called function()");
 }
 
-// struct visibility 
+// struct visibility
 mod my {
     pub struct OpenBox<T> {
         pub contents: T,
@@ -86,14 +84,13 @@ mod my {
 
 mod deeply {
     pub mod nested {
-        pub fn function(){
+        pub fn function() {
             println!("called deeply::nested::function()");
         }
     }
 }
 
 use deeply::nested::function as other_function;
-
 
 mod cool {
     pub fn function() {
@@ -135,8 +132,10 @@ fn main() {
 
     my_mod::public_function_in_create();
 
-    // struct visibility 
-    let open_box = my::OpenBox {contents: "public information"};
+    // struct visibility
+    let open_box = my::OpenBox {
+        contents: "public information",
+    };
     println!("{}", open_box.contents);
 
     let _closed_box = my::ClosedBox::new("classified information");

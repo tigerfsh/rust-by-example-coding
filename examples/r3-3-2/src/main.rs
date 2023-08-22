@@ -13,17 +13,17 @@ enum VeryVerboseEnumOfThingsToDoWithNumbers {
     Subtract,
 }
 
-// creates a type alias 
+// creates a type alias
 type Operations = VeryVerboseEnumOfThingsToDoWithNumbers;
 
-// using Self alias 
+// using Self alias
 impl VeryVerboseEnumOfThingsToDoWithNumbers {
     fn run(&self, x: i32, y: i32) -> i32 {
         // self 是指枚举成员
         // Self 是指枚举类型
         match self {
-            Self::Add => x+y,
-            Self::Subtract => x-y,
+            Self::Add => x + y,
+            Self::Subtract => x - y,
         }
     }
 }
@@ -63,11 +63,11 @@ enum Color {
     Blue,
 }
 
-// Testcase: linked-list 
+// Testcase: linked-list
 // List here is Node
 enum List {
     Cons(u32, Box<List>),
-    // Nil: A node that signifies the end of the linked list 
+    // Nil: A node that signifies the end of the linked list
     Nil,
 }
 
@@ -81,7 +81,7 @@ impl List {
     }
 
     // after Rust 2018 you can use self here and tail (with no ref) below as well,
-    // rust will infer &s and ref tail. 
+    // rust will infer &s and ref tail.
     // See https://doc.rust-lang.org/edition-guide/rust-2018/ownership-and-lifetimes/default-match-bindings.html
     fn len(&self) -> u32 {
         match self {
@@ -94,10 +94,10 @@ impl List {
         match self {
             Self::Cons(head, tail) => {
                 format!("{}, {}", head, tail.stringify())
-            },
+            }
             Self::Nil => {
                 format!("Nil")
-            },
+            }
         }
     }
 }
@@ -153,13 +153,10 @@ fn main() {
     println!("linked list has length: {}", list.len());
     println!("{}", list.stringify());
 
-    
     //临时写了一道编程题
     let mut nums: Vec<i32> = vec![1, 1, 2, 3];
     let new_length = remove_duplicates(&mut nums);
     println!("new length: {}", new_length);
-
-
 }
 
 fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
@@ -172,14 +169,13 @@ fn remove_duplicates(nums: &mut Vec<i32>) -> i32 {
         if nums.get(i).unwrap() < nums.get(j).unwrap() {
             let j_val = *nums.get(j).unwrap();
             // val: value of i+1
-            if let Some(val) = nums.get_mut(i+1) {
+            if let Some(val) = nums.get_mut(i + 1) {
                 *val = j_val;
                 i += 1;
             }
-
         }
         j += 1;
     }
 
-    (i+1) as i32
+    (i + 1) as i32
 }

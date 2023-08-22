@@ -11,7 +11,6 @@ trait Animal {
     fn talk(&self) {
         println!("{} says {}", self.name(), self.noise());
     }
-
 }
 
 impl Sheep {
@@ -22,7 +21,6 @@ impl Sheep {
     fn shear(&mut self) {
         if self.is_naked() {
             println!("{} is already naked ...", self.name());
-
         } else {
             println!("{} gets a haircut!", self.name);
             self.naked = true;
@@ -32,7 +30,10 @@ impl Sheep {
 
 impl Animal for Sheep {
     fn new(name: &'static str) -> Self {
-        Sheep { naked: false, name: name }
+        Sheep {
+            naked: false,
+            name: name,
+        }
     }
 
     fn name(&self) -> &'static str {
@@ -46,13 +47,13 @@ impl Animal for Sheep {
             "baaaaaaa!"
         }
     }
-    
+
     fn talk(&self) {
         println!("{} pauses briefly ... {}", self.name, self.noise());
     }
 }
 
-// 16.1 
+// 16.1
 /*
 
     Comparison traits: Eq, PartialEq, Ord, PartialOrd.
@@ -74,13 +75,11 @@ impl Inches {
     fn to_centimeters(&self) -> Centimeters {
         let &Inches(inches) = self;
         Centimeters(inches as f64 * 2.54)
-
     }
 }
 
 #[derive(Debug, PartialEq)]
 struct Seconds(i32);
-
 
 fn main() {
     // let mut dolly = Sheep::new("Dolly");
@@ -89,7 +88,7 @@ fn main() {
     dolly.shear();
     dolly.talk();
 
-    // 16.1 
+    // 16.1
     let _one_second = Seconds(1);
     println!("One second looks like: {:?}", _one_second);
 
@@ -99,15 +98,14 @@ fn main() {
     println!("One foot equals: {:?}", foot);
 
     let meter = Centimeters(100.0);
-    let cmp = 
-        if foot.to_centimeters() < meter {
-            "smaller"
-        } else {
-            "bigger"
-        };
+    let cmp = if foot.to_centimeters() < meter {
+        "smaller"
+    } else {
+        "bigger"
+    };
     println!("one foot is {} than another one.", cmp);
-    
-    // Default trait 
+
+    // Default trait
     // https://doc.rust-lang.org/std/default/trait.Default.html
 
     #[derive(Default)]
@@ -118,7 +116,7 @@ fn main() {
 
     let _options: SomeOptions = Default::default();
 
-    // Hash trait 
+    // Hash trait
     // https://doc.rust-lang.org/std/hash/trait.Hash.html
     #[derive(Hash)]
     struct Rustacean {
@@ -142,7 +140,11 @@ fn main() {
 
     use std::collections::hash_map::DefaultHasher;
     let mut hasher = DefaultHasher::new();
-    let p = Person {id: 100, name: String::from("xiaoming"), phone: 16619921943};
+    let p = Person {
+        id: 100,
+        name: String::from("xiaoming"),
+        phone: 16619921943,
+    };
     p.hash(&mut hasher);
     println!("Hash is {:?}", hasher.finish());
 
@@ -173,15 +175,12 @@ fn main() {
         }
     }
 
-
     impl PartialOrd for Book {
         fn partial_cmp(&self, other: &Self) -> Option<std::cmp::Ordering> {
             Some(self.cmp(other))
         }
     }
-    impl Eq for Book {
-        
-    }
+    impl Eq for Book {}
     let book1 = Book {
         isbn: 100,
         format: BookFormat::PaperBack,
@@ -193,14 +192,14 @@ fn main() {
     };
 
     println!("book1 == book2: {:?}", book1 == book2);
-    
+
     // PartialOrd, Ord
     println!("book1 < book2: {}", book1 < book2);
 
-    // Clone vs Copy 
+    // Clone vs Copy
     // https://doc.rust-lang.org/core/marker/trait.Copy.html
 
-    // 不使用#[derive(Copy, Clone)]，手动实现Copy, Clone 
+    // 不使用#[derive(Copy, Clone)]，手动实现Copy, Clone
 
     impl Copy for Book {}
 
@@ -222,13 +221,12 @@ fn main() {
         }
     }
 
-    // 16.2 
+    // 16.2
     let my_fruit = random_fruit(1.0);
     println!("fruit: {}", my_fruit.color());
-    
 }
 
-// 16.2 
+// 16.2
 struct Apple {}
 struct Orange {}
 
@@ -256,7 +254,7 @@ fn random_fruit(random_num: f64) -> Box<dyn Fruit> {
     }
 }
 
-// supertrait 
+// supertrait
 trait MySuperTrait1 {
     fn my_super_method1(&self);
 }

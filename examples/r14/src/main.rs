@@ -1,4 +1,7 @@
-use std::{fmt::{Debug, Display}, marker::PhantomData};
+use std::{
+    fmt::{Debug, Display},
+    marker::PhantomData,
+};
 
 struct A;
 
@@ -172,7 +175,7 @@ fn old_enough(age: &Years) -> bool {
     age.0 >= 18
 }
 
-// associated types 
+// associated types
 // struct Container(i32, i32);
 
 // trait Contains<A, B> {
@@ -183,11 +186,11 @@ fn old_enough(age: &Years) -> bool {
 
 // impl Contains<i32, i32> for Container {
 //     fn contains(&self, number_1: &i32, number_2: &i32) -> bool {
-//         (&self.0 == number_1) && (&self.1 == number_2) 
+//         (&self.0 == number_1) && (&self.1 == number_2)
 //     }
 
 //     fn first(&self) -> i32 {
-//         self.0 
+//         self.0
 //     }
 
 //     fn last(&self) -> i32 {
@@ -195,7 +198,7 @@ fn old_enough(age: &Years) -> bool {
 //     }
 // }
 
-// fn difference<A, B, C>(container: &C) -> i32 
+// fn difference<A, B, C>(container: &C) -> i32
 // where
 // C: Contains<A, B>
 // {
@@ -234,13 +237,15 @@ fn difference<C: Contains>(container: &C) -> i32 {
     container.last() - container.first()
 }
 
-// phantom type parameters 
+// phantom type parameters
 #[derive(PartialEq)]
 struct PhantomTuple<A, B>(A, PhantomData<B>);
 
 #[derive(PartialEq)]
-struct PhantomStruct<A, B> {first: A, phantom: PhantomData<B>}
-
+struct PhantomStruct<A, B> {
+    first: A,
+    phantom: PhantomData<B>,
+}
 
 // unit clarification
 // TODO
@@ -328,7 +333,7 @@ fn main() {
 
     compare_types(&array, &vec);
 
-    // where 
+    // where
     let vec = vec![1, 2, 3];
     vec.print_in_option();
     let array = [100, 200, 300];
@@ -347,7 +352,7 @@ fn main() {
     let Years(val) = years;
     println!("val: {}", val);
 
-    // associated types 
+    // associated types
     let number_1 = 3;
     let number_2 = 10;
     let container = Container(number_1, number_2);
@@ -357,12 +362,18 @@ fn main() {
     println!("last: {}", container.last());
     println!("the diffdrence is {}", difference(&container));
 
-    // phantom type parameters 
+    // phantom type parameters
     let _tuple1: PhantomTuple<char, f32> = PhantomTuple('Q', PhantomData);
     let _tuple2: PhantomTuple<char, f64> = PhantomTuple('Q', PhantomData);
 
-    let _struct1: PhantomStruct<char, f32> = PhantomStruct { first: 'Q', phantom: PhantomData };
-    let _struct2: PhantomStruct<char, f64> = PhantomStruct { first: 'Q', phantom: PhantomData };
+    let _struct1: PhantomStruct<char, f32> = PhantomStruct {
+        first: 'Q',
+        phantom: PhantomData,
+    };
+    let _struct2: PhantomStruct<char, f64> = PhantomStruct {
+        first: 'Q',
+        phantom: PhantomData,
+    };
 
     // RAII
     // Allocate an integer on the heap
@@ -387,5 +398,4 @@ fn main() {
     // Destructor
     let x = ToDrop;
     println!("Made a ToDrop!");
-
 }

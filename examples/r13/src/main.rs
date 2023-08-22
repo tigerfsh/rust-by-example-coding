@@ -1,4 +1,4 @@
-// decode_code 
+// decode_code
 fn used_function() {}
 
 #[allow(dead_code)]
@@ -19,7 +19,7 @@ fn are_you_on_linux() {
 }
 
 fn main() {
-    // dead_code 
+    // dead_code
     used_function();
 
     // cfg
@@ -30,5 +30,4 @@ fn main() {
     } else {
         println!("Yes. It's not linux.");
     }
-
 }

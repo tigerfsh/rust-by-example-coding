@@ -68,7 +68,7 @@ fn main() {
     println!("{}, {}", x, y);
 
     let a = "hello";
-    // copy a to b 
+    // copy a to b
     let b = a;
     println!("{}, {}", a, b);
 
@@ -89,16 +89,19 @@ fn main() {
     println!("mutable_box now contains {}", mutable_box);
 
     // partial-moves
-    let man = Man {name: String::from("Alice"), age: Box::new(20)};
-    let Man {name, ref age} = man;
+    let man = Man {
+        name: String::from("Alice"),
+        age: Box::new(20),
+    };
+    let Man { name, ref age } = man;
     // `name` is moved out of person, but `age` is referenced
     println!("man's age: {}", age);
     println!("man's name: {name}");
 
     // println!("{:?}", man);
     println!("man's age: {}", man.age);
-    
-    // 15.3 
+
+    // 15.3
     let boxed_i32 = Box::new(5_i32);
     let stacked_i32 = 6_i32;
 
@@ -112,7 +115,7 @@ fn main() {
     }
     eat_box_i32(boxed_i32);
 
-    // 15.3.1 
+    // 15.3.1
     let immutabook = Book {
         author: "xiao ming",
         title: "Food",
@@ -125,22 +128,26 @@ fn main() {
     borrow_book(&mutabook);
 
     new_edition(&mut mutabook);
-    // new_edition(&mut immutabook); // not work 
+    // new_edition(&mut immutabook); // not work
 
     // 15.3.2
-    let mut point = Point {x: 0, y: 0, z: 0};
+    let mut point = Point { x: 0, y: 0, z: 0 };
 
     let borrowed_point = &point;
     let another_borrwo = &point;
 
-    println!("Point has coordinates: ({}, {}, {})",
-        borrowed_point.x, another_borrwo.y, point.z);
-    
+    println!(
+        "Point has coordinates: ({}, {}, {})",
+        borrowed_point.x, another_borrwo.y, point.z
+    );
+
     // let mutable_borrow = &mut point;
 
-    println!("Point has coordinates: ({}, {}, {})",
-        borrowed_point.x, another_borrwo.y, point.z);
-    
+    println!(
+        "Point has coordinates: ({}, {}, {})",
+        borrowed_point.x, another_borrwo.y, point.z
+    );
+
     let mutable_borrow = &mut point;
 
     mutable_borrow.x = 5;
@@ -149,15 +156,19 @@ fn main() {
 
     // no other refs (point) can be used here.
 
-    println!("Point has coordinates: ({}, {}, {})", 
-    mutable_borrow.x, mutable_borrow.y, mutable_borrow.z);
+    println!(
+        "Point has coordinates: ({}, {}, {})",
+        mutable_borrow.x, mutable_borrow.y, mutable_borrow.z
+    );
 
     // The mutable reference is no longer used for the rest of the code so it
     // is possible to reborrow
 
     let new_borrowd_point = &point;
-    println!("Point now has coordinates: ({}, {}, {})",
-    new_borrowd_point.x, new_borrowd_point.y, new_borrowd_point.z);
+    println!(
+        "Point now has coordinates: ({}, {}, {})",
+        new_borrowd_point.x, new_borrowd_point.y, new_borrowd_point.z
+    );
 
     // 15.3.3
 
@@ -167,23 +178,32 @@ fn main() {
     let ref_c2 = &c;
     println!("ref_c1 == ref_c2: {}", *ref_c1 == *ref_c2);
 
-    let point = Point{x: 0, y: 0, z: 0};
+    let point = Point { x: 0, y: 0, z: 0 };
     let _copy_of_x = {
-        let Point { x: ref ref_to_x, y: _, z: _ } = point;
+        let Point {
+            x: ref ref_to_x,
+            y: _,
+            z: _,
+        } = point;
         *ref_to_x
-
     };
 
     // A mutable copy of `point`
     let mut mutable_point = point;
     {
-        let Point { x: _, y: ref mut mut_ref_to_y, z: _ } = mutable_point;
+        let Point {
+            x: _,
+            y: ref mut mut_ref_to_y,
+            z: _,
+        } = mutable_point;
         *mut_ref_to_y = 1;
     }
 
     println!("point is ({}, {}, {})", point.x, point.y, point.z);
-    println!("mutable point is ({}, {}, {})",
-    mutable_point.x, mutable_point.y, mutable_point.z);
+    println!(
+        "mutable point is ({}, {}, {})",
+        mutable_point.x, mutable_point.y, mutable_point.z
+    );
 
     let mut mutable_tuple = (Box::new(5u32), 3u32);
     {
@@ -193,17 +213,17 @@ fn main() {
 
     println!("tuple is {:?}", mutable_tuple);
 
-    // 15.4 
-    // 15.4.3 
+    // 15.4
+    // 15.4.3
     let mut owner = Owner(18);
     owner.add_one();
     owner.print();
 
-    // 15.4.5 
+    // 15.4.5
     let b: BorrowedX = Default::default();
     println!("b is {:?}", b);
 
-    // 15.4.6 
+    // 15.4.6
     let x = 7;
     let ref_x = Ref(&x);
 
@@ -216,12 +236,11 @@ fn main() {
         let second = 3;
         println!("{}", multiply(&first, &second));
         println!("{} is the first", choose_first(&first, &second));
-
     }
 
     // 15.4.8
-    // static 
-    // Reference lifetime 
+    // static
+    // Reference lifetime
     // As a reference lifetime 'static indicates that the data pointed to by the reference lives for the entire lifetime of the running program. It can still be coerced to a shorter lifetime.
     {
         let static_string = "I am in read-only memory";
@@ -232,12 +251,11 @@ fn main() {
         let lifetime_num = 9;
         let coerced_static = coerce_static(&lifetime_num);
         println!("coerced_static: {}", coerced_static);
-
     }
 
     println!("NUM: {}", NUM);
 
-    // Trait bound 
+    // Trait bound
     /*
     As a trait bound, it means the type does not contain any non-static references. Eg. the receiver can hold on to the type for as long as they want and it will never become invalid until they drop it.
 
@@ -251,17 +269,19 @@ fn main() {
 
     // oops, &i only has the lifetime defined by the scope of
     // main(), so it's not 'static:
-    // print_it(&i); // error 
+    // print_it(&i); // error
 
     print_it(&NUM);
 
     // 16.2
     let random_number = 0.234;
     let animal = random_animal(random_number);
-    print!("You've randomly chosen an animal, and it says {}", animal.noise());
-    
+    print!(
+        "You've randomly chosen an animal, and it says {}",
+        animal.noise()
+    );
 }
-// 16.2 
+// 16.2
 struct Sheep {}
 struct Cow {}
 
@@ -278,7 +298,7 @@ impl Animal for Sheep {
 impl Animal for Cow {
     fn noise(&self) -> &'static str {
         "moooooooo!"
-    }        
+    }
 }
 
 fn random_animal(random_number: f64) -> Box<dyn Animal> {
@@ -291,23 +311,23 @@ fn random_animal(random_number: f64) -> Box<dyn Animal> {
 
 static NUM: i32 = 18;
 
-// 15.4.1 
+// 15.4.1
 // fn failed_borrow<'a>() {
 //     let _x = 12;
 //     let y: &'a i32 = &_x;
-//     // Attempting to use the lifetime `'a` as an explicit type annotation 
+//     // Attempting to use the lifetime `'a` as an explicit type annotation
 //     // inside the function will fail because the lifetime of `&_x` is shorter
 //     // than that of `y`. A short lifetime cannot be coerced into a longer one.
 
 // }
 fn longer_str<'a>(a: &'a str, b: &'a str) -> &'a str {
     if a.len() > b.len() {
-        return a
+        return a;
     }
-    b 
+    b
 }
 
-// 15.4.2 
+// 15.4.2
 // One input reference with lifetime `'a` which must live
 // at least as long as the function.
 fn print_one<'a>(x: &'a i32) {
@@ -325,9 +345,11 @@ fn print_multi<'a, 'b>(x: &'a i32, y: &'b i32) {
     println!("print_multi: x is {}, y is {}", x, y);
 }
 
-fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {x}
+fn pass_x<'a, 'b>(x: &'a i32, _: &'b i32) -> &'a i32 {
+    x
+}
 
-// 15.4.3 
+// 15.4.3
 struct Owner(i32);
 
 impl Owner {
@@ -335,12 +357,12 @@ impl Owner {
         self.0 += 1;
     }
 
-    fn print<'a >(&'a self) {
+    fn print<'a>(&'a self) {
         println!("print: {}", self.0);
     }
 }
 
-// 15.4.4 
+// 15.4.4
 #[derive(Debug)]
 struct BorrowedItem<'a>(&'a i32);
 
@@ -368,7 +390,7 @@ impl<'a> Default for BorrowedX<'a> {
     }
 }
 
-// 15.4.6 
+// 15.4.6
 /*
     T: 'a: All references in T must outlive lifetime 'a.
     T: Trait + 'a: Type T must implement trait Trait and all references in T must outlive 'a.
@@ -379,21 +401,21 @@ struct Ref<'a, T: 'a>(&'a T);
 
 fn print_bounds<T>(t: T)
 where
-T: Debug 
+    T: Debug,
 {
     println!("print_bounds: t is {:?}", t);
 }
 
-fn print_ref<'a, T>(t: &'a T) 
-where 
-T: Debug + 'a 
+fn print_ref<'a, T>(t: &'a T)
+where
+    T: Debug + 'a,
 {
     println!("print_ref: t is {:?}", t);
 }
 
-fn print_ref_v2<T>(t: &T) 
-where 
-T: Debug
+fn print_ref_v2<T>(t: &T)
+where
+    T: Debug,
 {
     println!("print_ref_v2: t is {:?}", t);
 }
@@ -405,10 +427,10 @@ fn multiply<'a>(first: &'a i32, second: &'a i32) -> i32 {
 // `<'a: 'b, 'b>` reads as lifetime `'a` is at least as long as `'b`.
 // Here, we take in an `&'a i32` and return a `&'b i32` as a result of coercion.
 fn choose_first<'a: 'b, 'b>(first: &'a i32, _: &'b i32) -> &'b i32 {
-    first 
+    first
 }
 
-// 15.4.8 
+// 15.4.8
 fn coerce_static<'a>(_: &'a i32) -> &'a i32 {
     &NUM
 }
@@ -418,7 +440,7 @@ fn print_it(input: impl Debug + 'static) {
     println!("static value passed in is: {:?}", input);
 }
 
-// 15.3 
+// 15.3
 // This function takes ownership of a box and destroys it
 fn eat_box_i32(boxed_i32: Box<i32>) {
     println!("Destroying box that contains {}", boxed_i32);
@@ -429,7 +451,7 @@ fn borrow_i32(borrowed_i32: &i32) {
     println!("This int is: {}", borrowed_i32);
 }
 
-// 15.3.1 
+// 15.3.1
 #[allow(dead_code)]
 #[derive(Clone, Copy)]
 struct Book {
@@ -447,7 +469,7 @@ fn new_edition(book: &mut Book) {
     println!("I immutably borrowed {} -{} edition", book.title, book.year);
 }
 
-// 15.3.2 and 15.3.3 
+// 15.3.2 and 15.3.3
 #[derive(Clone, Copy)]
 struct Point {
     x: i32,

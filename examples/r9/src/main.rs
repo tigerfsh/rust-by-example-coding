@@ -239,11 +239,11 @@ fn main() {
     }
 
     // diverging functions 分叉函数，（流程控制）
-    // return nothing 
+    // return nothing
     let _a: () = some_fn(); // return unit
     println!("This function returns and you can see this line.");
 
-    // panic! 
+    // panic!
     // loop {}
     // exit()
     // ...
@@ -251,7 +251,6 @@ fn main() {
     // let _b = loop {
     // };
     // let _c = panic!("this is a panic");
-
 }
 
 fn some_fn() {

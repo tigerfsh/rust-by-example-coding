@@ -1,6 +1,6 @@
 // extern crate rary; // May be required for Rust 2015 edition or earlier
 
-// rustc main.rs --extern rary=library.rlib && ./main 
+// rustc main.rs --extern rary=library.rlib && ./main
 
 fn main() {
     rary::public_function();

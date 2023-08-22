@@ -4,7 +4,7 @@ fn main() {
     let unit = ();
 
     let copied_integer = an_integer;
-    
+
     println!("An integer: {:?}", copied_integer);
     println!("A boolean: {:?}", a_boolean);
     println!("Meet the unit value: {:?}", unit);
@@ -22,14 +22,12 @@ fn main() {
 
     println!("After mutation: {}", mutble_binding);
 
-    
     // Scope and Shadowing
     let a = 1;
     {
         println!("before being shadowed: {}", a);
         let a = 100;
         println!("after being shadowed: {}", a);
-
     }
 
     println!("outside inner block: {}", a);
@@ -37,7 +35,7 @@ fn main() {
     let a = 200;
     println!("shadowed in outer block: {}", a);
 
-    // Declare first 
+    // Declare first
     let b;
     {
         let c = 500;
@@ -52,5 +50,4 @@ fn main() {
         // _mutable_integer = 50;
     }
     _mutable_integer = 500;
-
 }
