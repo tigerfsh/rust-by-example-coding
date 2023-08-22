@@ -224,6 +224,39 @@ fn main() {
     // 16.2
     let my_fruit = random_fruit(1.0);
     println!("fruit: {}", my_fruit.color());
+
+    // 16.3 operator overloading
+    println!("Foo + Bar = {:?}", Foo + Bar);
+}
+// 16.3
+
+use std::ops::Add;
+
+struct Foo;
+struct Bar;
+
+#[derive(Debug)]
+struct FooBar;
+
+#[derive(Debug)]
+struct BarFoo;
+
+impl Add<Bar> for Foo {
+    type Output = FooBar;
+
+    fn add(self, _rhs: Bar) -> FooBar {
+        println!("> Foo.add(Bar> was called");
+        FooBar
+    }
+}
+
+impl Add<Foo> for Bar {
+    type Output = BarFoo;
+
+    fn add(self, _rhs: Foo) -> BarFoo {
+        println!("> Bar.add(Foo) was called.");
+        BarFoo
+    }
 }
 
 // 16.2
