@@ -222,6 +222,38 @@ fn main() {
         }
     }
 
+    // 16.2 
+    let my_fruit = random_fruit(1.0);
+    println!("fruit: {}", my_fruit.color());
+    
+}
+
+// 16.2 
+struct Apple {}
+struct Orange {}
+
+trait Fruit {
+    fn color(&self) -> &'static str;
+}
+
+impl Fruit for Apple {
+    fn color(&self) -> &'static str {
+        "the color of apple is red."
+    }
+}
+
+impl Fruit for Orange {
+    fn color(&self) -> &'static str {
+        "the color of orange is yellow."
+    }
+}
+
+fn random_fruit(random_num: f64) -> Box<dyn Fruit> {
+    if random_num < 0.5 {
+        Box::new(Apple {})
+    } else {
+        Box::new(Orange {})
+    }
 }
 
 // supertrait 
