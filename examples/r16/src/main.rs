@@ -294,7 +294,36 @@ fn main() {
     let doubles = double_positives(&singles);
     assert_eq!(doubles.collect::<Vec<i32>>(), vec![4, 6]);
     
+    // 16.7
+    let unit = Unit;
+    let copied_unit = unit;
+
+    println!("original: {:?}", unit);
+    println!("copy: {:?}", copied_unit);
+
+    let pair = Pair(Box::new(1), Box::new(2));
+    println!("original: {:?}", pair);
+
+    let moved_pair = pair;
+    println!("moved: {:?}", moved_pair);
+
+    // println!("origianl: {:?}", pair);
+
+    let cloned_pair = moved_pair.clone();
+
+    drop(moved_pair);
+
+    println!("clone: {:?}", cloned_pair);
+
+
 }
+// 16.7 
+#[derive(Debug, Clone, Copy)]
+struct Unit;
+
+#[derive(Clone, Debug)]
+struct Pair(Box<i32>, Box<i32>);
+
 // 16.6 
 
 // as an argument type
