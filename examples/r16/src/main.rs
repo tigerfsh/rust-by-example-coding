@@ -315,8 +315,59 @@ fn main() {
 
     println!("clone: {:?}", cloned_pair);
 
+    // 16.8
+
 
 }
+
+// 16.8 
+trait MyPerson {
+    fn name(&self) -> String;
+}
+
+trait Student: MyPerson {
+    fn university(&self) -> String;
+}
+
+trait Programmer {
+    fn fav_language(&self) -> String;
+}
+
+trait CompSciStudent: Programmer + Student {
+    fn git_username(&self) -> String;
+}
+
+// dyn vs impl vs generic parameters ?
+fn comp_sci_student_greeting(student: &dyn CompSciStudent) -> String {
+    format!(
+        "My name is {} and I attend {}. My favorite language is {}. My Git username is {}",
+        student.name(),
+        student.university(),
+        student.fav_language(),
+        student.git_username(),
+    )
+}
+
+// fn comp_sci_student_greeting(student: impl CompSciStudent) -> String {
+//     format!(
+//         "My name is {} and I attend {}. My favorite language is {}. My Git username is {}",
+//         student.name(),
+//         student.university(),
+//         student.fav_language(),
+//         student.git_username(),
+//     )
+// }
+
+// fn comp_sci_student_greeting<B: CompSciStudent>(student: B) -> String {
+//     format!(
+//         "My name is {} and I attend {}. My favorite language is {}. My Git username is {}",
+//         student.name(),
+//         student.university(),
+//         student.fav_language(),
+//         student.git_username(),
+//     )
+// }
+
 // 16.7 
 #[derive(Debug, Clone, Copy)]
 struct Unit;
