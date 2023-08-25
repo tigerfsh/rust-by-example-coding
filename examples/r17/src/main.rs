@@ -1,4 +1,9 @@
 /*
+You can look at this book, 
+https://doc.rust-lang.org/reference/macros-by-example.html#transcribing
+*/
+
+/*
 So why are macros useful?
 
     Don't repeat yourself. There are many cases where you may need similar functionality in multiple places but with different types. Often, writing a macro is a useful way to avoid repeating code. (More on this later)
@@ -62,7 +67,7 @@ fn main() {
     say_hello!();
 
     // 17.1.1
-    
+
     foo();
     bar();
 
