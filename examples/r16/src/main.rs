@@ -316,8 +316,48 @@ fn main() {
     println!("clone: {:?}", cloned_pair);
 
     // 16.8
+    // no code in main function 
+
+    // 16.9 Disambiguating overlapping traits 
+    let form = Form {
+        username: "rustacean".to_owned(),
+        age: 28,
+    };
+
+    // this is called "Fully Qualified Syntax."
+    let username = <Form as UsernameWidget>::get(&form);
+    println!("username: {}", username);
+
+    let age = <Form as AgeWidget>::get(&form);
+    println!("age: {}", age);
 
 
+
+}
+// 16.9 
+trait UsernameWidget {
+    fn get(&self) -> String;
+}
+
+trait AgeWidget {
+    fn get(&self) -> u8;
+}
+
+struct Form {
+    username: String,
+    age: u8,
+}
+
+impl UsernameWidget for Form {
+    fn get(&self) -> String {
+        self.username.clone()
+    }
+}
+
+impl AgeWidget for Form {
+    fn get(&self) -> u8 {
+        self.age
+    }
 }
 
 // 16.8 
