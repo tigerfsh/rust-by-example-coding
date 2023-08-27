@@ -43,6 +43,7 @@ fn next_birthday_v2(current_age: Option<u8>) -> Option<String> {
 }
 
 // 18.3.2
+
 #[derive(Debug)]
 enum Food {
     Apple,
