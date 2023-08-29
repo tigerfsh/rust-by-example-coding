@@ -62,10 +62,16 @@ fn main() {
     let tt = multiply("t", "2");
     print(tt);
 }
+
+// 18.4.2  
+// alias for Result, test in 18.4.1 
+
 // 18.4.1
 use std::num::ParseIntError;
 
-fn multiply(first_number_str: &str, second_number_str: &str) -> Result<i32, ParseIntError> {
+type AliasedResult<T> = Result<T, ParseIntError>;
+
+fn multiply(first_number_str: &str, second_number_str: &str) -> AliasedResult<i32> {
     match first_number_str.parse::<i32>() {
         Ok(first_number) => match second_number_str.parse::<i32>() {
             Ok(second_number) => Ok(first_number * second_number),
@@ -75,7 +81,7 @@ fn multiply(first_number_str: &str, second_number_str: &str) -> Result<i32, Pars
     }
 }
 
-fn multiply_v2(first_number_str: &str, second_number_str: &str) -> Result<i32, ParseIntError> {
+fn multiply_v2(first_number_str: &str, second_number_str: &str) -> AliasedResult<i32> {
     first_number_str.parse::<i32>().and_then(|first_number| {
         second_number_str
             .parse::<i32>()
@@ -83,14 +89,14 @@ fn multiply_v2(first_number_str: &str, second_number_str: &str) -> Result<i32, P
     })
 }
 
-fn multiply_v3(first_number_str: &str, second_number_str: &str) -> Result<i32, ParseIntError> {
+fn multiply_v3(first_number_str: &str, second_number_str: &str) -> AliasedResult<i32> {
     first_number_str.parse::<i32>().and_then(|first_num| {
         second_number_str
             .parse::<i32>()
             .map(|second_num| first_num * second_num)
     })
 }
-fn print(result: Result<i32, ParseIntError>) {
+fn print(result: AliasedResult<i32>) {
     match result {
         Ok(n) => println!("n is {}", n),
         Err(e) => println!("Error: {}", e),
