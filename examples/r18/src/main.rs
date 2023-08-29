@@ -15,6 +15,55 @@ fn main() {
     let _a = my_func().map(|a| Some(a));
     let _b = Some(100).map(|a| Some(a));
     let _c = Some(100).and_then(|a| Some(a));
+
+    // 18.3.4
+    // or vs or_else, get_or_insert vs get_or_insert_with
+
+    let apple = Some(Fruit::Apple);
+    let orange = Some(Fruit::Orange);
+    let no_fruit: Option<Fruit> = None;
+
+    let first_available_fruit = no_fruit.or(orange).or(apple);
+    println!("{:?}", first_available_fruit);
+
+    let apple = Some(Fruit::Apple);
+    let no_fruit: Option<Fruit> = None;
+
+    let get_kiwi_as_fallback = || {
+        println!("Prividing kiwi as fallback");
+        Some(Fruit::Kiwi)
+    };
+
+    let get_lemon_as_fallback = || {
+        println!("Providing lemon as fallback");
+        Some(Fruit::Lemon)
+    };
+
+    let first_available_fruit = no_fruit
+        .or_else(get_kiwi_as_fallback)
+        .or_else(get_lemon_as_fallback);
+    println!("first avaiable fruit: {:?}", first_available_fruit);
+
+    let mut my_fruit: Option<Fruit> = None;
+    let apple = Fruit::Apple;
+    let first_available_fruit = my_fruit.get_or_insert(apple);
+    println!("first_available_fruit: {:?}", first_available_fruit);
+    println!("my_fruit: {:?}", my_fruit);
+
+    let mut my_fruit: Option<Fruit> = None;
+    let get_lemon_as_fallback_v2 = || Fruit::Lemon;
+
+    let first_available_fruit = my_fruit.get_or_insert_with(get_lemon_as_fallback_v2);
+    println!("first_available_fruit: {:?}", first_available_fruit);
+}
+// 18.3.4
+#[derive(Debug)]
+enum Fruit {
+    Apple,
+    Orange,
+    Banana,
+    Kiwi,
+    Lemon,
 }
 fn my_func() -> Option<i32> {
     Some(100)
