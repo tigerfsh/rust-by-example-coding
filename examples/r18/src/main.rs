@@ -62,9 +62,24 @@ fn main() {
     let tt = multiply("t", "2");
     print(tt);
 }
+// 18.4.3
+// early returns
+fn multiple_v4(first_number_str: &str, second_number_str: &str) -> Result<i32, ParseIntError> {
+    let first_number = match first_number_str.parse::<i32>() {
+        Ok(first_number) => first_number,
+        Err(e) => return Err(e),
+    };
 
-// 18.4.2  
-// alias for Result, test in 18.4.1 
+    let second_number = match second_number_str.parse::<i32>() {
+        Ok(second_number) => second_number,
+        Err(e) => return Err(e),
+    };
+
+    Ok(first_number * second_number)
+}
+
+// 18.4.2
+// alias for Result, test in 18.4.1
 
 // 18.4.1
 use std::num::ParseIntError;
