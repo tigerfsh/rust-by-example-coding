@@ -62,6 +62,14 @@ fn main() {
     let tt = multiply("t", "2");
     print(tt);
 }
+// 18.4.4 using ? the same as try! macro which may used in old code
+fn multiple_v5(first_number_str: &str, second_number_str: &str) -> Result<i32, ParseIntError> {
+    let first_number = first_number_str.parse::<i32>()?;
+    let second_number = second_number_str.parse::<i32>()?;
+    Ok(first_number * second_number)
+}
+
+
 // 18.4.3
 // early returns
 fn multiple_v4(first_number_str: &str, second_number_str: &str) -> Result<i32, ParseIntError> {
@@ -82,7 +90,7 @@ fn multiple_v4(first_number_str: &str, second_number_str: &str) -> Result<i32, P
 // alias for Result, test in 18.4.1
 
 // 18.4.1
-use std::num::ParseIntError;
+use std::{num::ParseIntError, simd::SupportedLaneCount};
 
 type AliasedResult<T> = Result<T, ParseIntError>;
 
