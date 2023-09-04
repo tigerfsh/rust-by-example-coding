@@ -1,4 +1,6 @@
 use std::error;
+use std::error::Error;
+use std::num::ParseIntError;
 use std::fmt;
 
 fn main() {
@@ -92,7 +94,72 @@ fn main() {
     print_v4(double_first_v4(empty));
     print_v4(double_first_v4(strings));
 
+    // 18.5.5 
+    println!("Welcome to the 18.5.5");
+    let numbers = vec!["42", "93", "18"];
+    let empty = vec![];
+    let strings = vec!["tofu", "93", "18"];
+    print_v6(double_first_v6(numbers));
+    print_v6(double_first_v6(empty));
+    print_v6(double_first_v6(strings));
+
 }
+// 18.5.5
+type WrapResult<T> = std::result::Result<T, WrapDoubleError>;
+
+#[derive(Debug)]
+enum WrapDoubleError {
+    EmptyVec,
+    Parse(ParseIntError),
+}
+
+impl fmt::Display for WrapDoubleError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        match self {
+            WrapDoubleError::EmptyVec => {
+                write!(f, "please use a vector at least one element.")
+            },
+            WrapDoubleError::Parse(..) => {
+                write!(f, "the provided string could not be parsed as int")
+            }
+        }
+    }
+}
+
+impl error::Error for WrapDoubleError {
+    fn source(&self) -> Option<&(dyn Error + 'static)> {
+        match self {
+            WrapDoubleError::EmptyVec => None,
+            WrapDoubleError::Parse(ref e) => Some(e),
+        }
+    }
+}
+
+impl From<ParseIntError> for WrapDoubleError {
+    fn from(value: ParseIntError) -> Self {
+        WrapDoubleError::Parse(value)
+    }
+}
+
+fn double_first_v6(vec: Vec<&str>) -> WrapResult<i32> {
+    let first = vec.first().ok_or(WrapDoubleError::EmptyVec)?;
+    let parsed = first.parse::<i32>()?;
+    Ok(2 * parsed)
+}
+
+fn print_v6(result: WrapResult<i32>) {
+    match result {
+        Ok(n) => println!("The first doubled is {}", n),
+        Err(e) => {
+            println!("Error: {}", e);
+            if let Some(source) = e.source() {
+                println!(" Caused by: {}", source);
+            }
+        }
+    }
+}
+
+
 type BoxResult<T> = std::result::Result<T, Box<dyn error::Error>>;
 
 // 18.5.4 
@@ -161,7 +228,6 @@ fn double_first_v3(vec: Vec<&str>) -> MyResult<i32> {
 // 18.5.1 
 // map vs map_or vs map_or_else
 
-use std::num::ParseIntError;
 
 fn double_first(vec: Vec<&str>) -> Option<Result<i32, ParseIntError>> {
     vec.first().map(|elem|{elem.parse::<i32>().map(|num| {2 * num})})
