@@ -61,7 +61,33 @@ fn main() {
 
     let tt = multiply("t", "2");
     print(tt);
+
+
+    let numbers = vec!["42", "93", "18"];
+    let empty = vec![];
+    let strings = vec!["tofu", "93", "18"];
+
+    println!("The first doubled is {:?}", double_first_v2(numbers));
+    println!("The first doubled is {:?}", double_first_v2(empty));
+    println!("The first doubled is {:?}", double_first_v2(strings));
+    
 }
+
+// 18.5.1 
+use std::num::ParseIntError;
+
+fn double_first(vec: Vec<&str>) -> Option<Result<i32, ParseIntError>> {
+    vec.first().map(|elem|{elem.parse::<i32>().map(|num| {2 * num})})
+}
+
+fn double_first_v2(vec: Vec<&str>) -> Result<Option<i32>, ParseIntError> {
+    let opt = vec.first().map(|first| {
+        first.parse::<i32>().map(|n| n * 2)
+    });
+    opt.map_or(Ok(None), |r| r.map(|m| Some(m)))
+    // opt.map_or(Ok(None), |r| r.map(Some)) //简写
+}
+
 // 18.4.4 using ? the same as try! macro which may used in old code
 fn multiple_v5(first_number_str: &str, second_number_str: &str) -> Result<i32, ParseIntError> {
     let first_number = first_number_str.parse::<i32>()?;
@@ -90,7 +116,7 @@ fn multiple_v4(first_number_str: &str, second_number_str: &str) -> Result<i32, P
 // alias for Result, test in 18.4.1
 
 // 18.4.1
-use std::{num::ParseIntError, simd::SupportedLaneCount};
+
 
 type AliasedResult<T> = Result<T, ParseIntError>;
 
