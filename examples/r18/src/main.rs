@@ -74,6 +74,8 @@ fn main() {
 }
 
 // 18.5.1 
+// map vs map_or vs map_or_else
+
 use std::num::ParseIntError;
 
 fn double_first(vec: Vec<&str>) -> Option<Result<i32, ParseIntError>> {
