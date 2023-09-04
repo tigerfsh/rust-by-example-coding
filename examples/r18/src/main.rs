@@ -1,7 +1,7 @@
 use std::error;
 use std::error::Error;
-use std::num::ParseIntError;
 use std::fmt;
+use std::num::ParseIntError;
 
 fn main() {
     // 18.1
@@ -67,7 +67,6 @@ fn main() {
     let tt = multiply("t", "2");
     print(tt);
 
-
     let numbers = vec!["42", "93", "18"];
     let empty = vec![];
     let strings = vec!["tofu", "93", "18"];
@@ -76,13 +75,13 @@ fn main() {
     println!("The first doubled is {:?}", double_first_v2(empty));
     println!("The first doubled is {:?}", double_first_v2(strings));
 
-    // 18.5.2 
+    // 18.5.2
     // for result
-    // map -> ok to ok, leaving err 
-    // map_err -> err to err, leaving ok  
-    // ok_or: option to result 
+    // map -> ok to ok, leaving err
+    // map_err -> err to err, leaving ok
+    // ok_or: option to result
     let a: Result<i32, f32> = Ok(2);
-    let _b = a.map_err(|e| {e + 0.01});
+    let _b = a.map_err(|e| e + 0.01);
 
     // 18.5.3
     let numbers = vec!["42", "93", "18"];
@@ -94,7 +93,7 @@ fn main() {
     print_v4(double_first_v4(empty));
     print_v4(double_first_v4(strings));
 
-    // 18.5.5 
+    // 18.5.5
     println!("Welcome to the 18.5.5");
     let numbers = vec!["42", "93", "18"];
     let empty = vec![];
@@ -103,6 +102,49 @@ fn main() {
     print_v6(double_first_v6(empty));
     print_v6(double_first_v6(strings));
 
+    // 18.6
+    // Iterating over Results
+    let strings = vec!["tofu", "93", "18"];
+    let numbers: Vec<_> = strings.into_iter().map(|s| s.parse::<i32>()).collect();
+
+    println!("Result: {:?}", numbers);
+
+    // Ignore the failed items with filter_map
+    let strings = vec!["tofu", "93", "18"];
+    let numbers: Vec<_> = strings
+        .into_iter()
+        .filter_map(|s| s.parse::<i32>().ok())
+        .collect();
+    println!("Results: {:?}", numbers);
+
+    let strings = vec!["tofu", "93", "18"];
+    let mut errors = vec![];
+    let numbers: Vec<_> = strings
+        .into_iter()
+        .map(|s| s.parse::<i32>())
+        .filter_map(|r| r.map_err(|e| errors.push(e)).ok())
+        .collect();
+    println!("Errors: {:?}", errors);
+    println!("Numbers: {:?}", numbers);
+
+    // Fail the entire operation with collect()
+    let strings = vec!["100", "tofu", "93", "18"];
+    let numbers: Result<Vec<_>, _> = strings.into_iter().map(|s| s.parse::<i32>()).collect();
+    println!("Results: {:?}", numbers);
+
+    // Collect all valid values and failures with partition()
+    let strings = vec!["100", "tofu", "93", "18"];
+    let (numbers, errors): (Vec<_>, Vec<_>) = strings
+        .into_iter()
+        .map(|s| s.parse::<i32>())
+        .partition(Result::is_ok);
+    println!("Numbers: {:?}", numbers);
+    println!("Errors: {:?}", errors);
+
+    let numbers: Vec<_> = numbers.into_iter().map(Result::unwrap).collect();
+    let errors: Vec<_> = errors.into_iter().map(Result::unwrap_err).collect();
+    println!("Numbers: {:?}", numbers);
+    println!("Errors: {:?}", errors);
 }
 // 18.5.5
 type WrapResult<T> = std::result::Result<T, WrapDoubleError>;
@@ -118,7 +160,7 @@ impl fmt::Display for WrapDoubleError {
         match self {
             WrapDoubleError::EmptyVec => {
                 write!(f, "please use a vector at least one element.")
-            },
+            }
             WrapDoubleError::Parse(..) => {
                 write!(f, "the provided string could not be parsed as int")
             }
@@ -159,20 +201,16 @@ fn print_v6(result: WrapResult<i32>) {
     }
 }
 
-
 type BoxResult<T> = std::result::Result<T, Box<dyn error::Error>>;
 
-// 18.5.4 
+// 18.5.4
 
 fn double_first_v5(vec: Vec<&str>) -> BoxResult<i32> {
     let first = vec.first().ok_or(EmptyVec)?;
     let parsed = first.parse::<i32>()?;
-    Ok(2 *  parsed)
-
+    Ok(2 * parsed)
 }
-// 18.5.3 
-
-
+// 18.5.3
 
 #[derive(Debug, Clone)]
 struct EmptyVec;
@@ -189,21 +227,17 @@ fn double_first_v4(vec: Vec<&str>) -> BoxResult<i32> {
     vec.first()
         .ok_or(EmptyVec.into())
         //.ok_or_else(|| EmptyVec.into())
-        .and_then(|s| {
-            s.parse::<i32>()
-                .map_err(|e| e.into())
-                .map(|i| {2 * i})
-        })
+        .and_then(|s| s.parse::<i32>().map_err(|e| e.into()).map(|i| 2 * i))
 }
 
 fn print_v4(result: BoxResult<i32>) {
     match result {
         Ok(n) => println!("The first double is {}", n),
-        Err(e) =>  println!("Error: {}", e),
+        Err(e) => println!("Error: {}", e),
     }
 }
-// 18.5.2 
-// Defining an error type 
+// 18.5.2
+// Defining an error type
 
 type MyResult<T> = std::result::Result<T, DoubleError>;
 
@@ -219,24 +253,18 @@ impl fmt::Display for DoubleError {
 fn double_first_v3(vec: Vec<&str>) -> MyResult<i32> {
     vec.first()
         .ok_or(DoubleError)
-        .and_then(|s| {
-            s.parse::<i32>()
-                .map_err(|_| DoubleError)
-                .map(|i| {2 * i})  
-        })
+        .and_then(|s| s.parse::<i32>().map_err(|_| DoubleError).map(|i| 2 * i))
 }
-// 18.5.1 
+// 18.5.1
 // map vs map_or vs map_or_else
 
-
 fn double_first(vec: Vec<&str>) -> Option<Result<i32, ParseIntError>> {
-    vec.first().map(|elem|{elem.parse::<i32>().map(|num| {2 * num})})
+    vec.first()
+        .map(|elem| elem.parse::<i32>().map(|num| 2 * num))
 }
 
 fn double_first_v2(vec: Vec<&str>) -> Result<Option<i32>, ParseIntError> {
-    let opt = vec.first().map(|first| {
-        first.parse::<i32>().map(|n| n * 2)
-    });
+    let opt = vec.first().map(|first| first.parse::<i32>().map(|n| n * 2));
     opt.map_or(Ok(None), |r| r.map(|m| Some(m)))
     // opt.map_or(Ok(None), |r| r.map(Some)) //简写
 }
@@ -247,7 +275,6 @@ fn multiple_v5(first_number_str: &str, second_number_str: &str) -> Result<i32, P
     let second_number = second_number_str.parse::<i32>()?;
     Ok(first_number * second_number)
 }
-
 
 // 18.4.3
 // early returns
@@ -269,7 +296,6 @@ fn multiple_v4(first_number_str: &str, second_number_str: &str) -> Result<i32, P
 // alias for Result, test in 18.4.1
 
 // 18.4.1
-
 
 type AliasedResult<T> = Result<T, ParseIntError>;
 
