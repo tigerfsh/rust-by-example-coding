@@ -79,11 +79,54 @@ fn main() {
     let a: Result<i32, f32> = Ok(2);
     let _b = a.map_err(|e| {e + 0.01});
 
+    // 18.5.3
+    let numbers = vec!["42", "93", "18"];
+    let empty = vec![];
+    let strings = vec!["tofu", "93", "18"];
     
+    println!("18.5.3");
+    print_v4(double_first_v4(numbers));
+    print_v4(double_first_v4(empty));
+    print_v4(double_first_v4(strings));
+
+}
+
+// 18.5.3 
+use std::error;
+use std::fmt;
+type BoxResult<T> = std::result::Result<T, Box<dyn error::Error>>;
+
+#[derive(Debug, Clone)]
+struct EmptyVec;
+
+impl fmt::Display for EmptyVec {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "invalid first item to double")
+    }
+}
+
+impl error::Error for EmptyVec {}
+
+fn double_first_v4(vec: Vec<&str>) -> BoxResult<i32> {
+    vec.first()
+        .ok_or(EmptyVec.into())
+        //.ok_or_else(|| EmptyVec.into())
+        .and_then(|s| {
+            s.parse::<i32>()
+                .map_err(|e| e.into())
+                .map(|i| {2 * i})
+        })
+}
+
+fn print_v4(result: BoxResult<i32>) {
+    match result {
+        Ok(n) => println!("The first double is {}", n),
+        Err(e) =>  println!("Error: {}", e),
+    }
 }
 // 18.5.2 
 // Defining an error type 
-use std::fmt;
+
 type MyResult<T> = std::result::Result<T, DoubleError>;
 
 #[derive(Debug, Clone)]
