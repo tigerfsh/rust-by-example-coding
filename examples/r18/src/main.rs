@@ -1,3 +1,6 @@
+use std::error;
+use std::fmt;
+
 fn main() {
     // 18.1
 
@@ -83,18 +86,26 @@ fn main() {
     let numbers = vec!["42", "93", "18"];
     let empty = vec![];
     let strings = vec!["tofu", "93", "18"];
-    
+
     println!("18.5.3");
     print_v4(double_first_v4(numbers));
     print_v4(double_first_v4(empty));
     print_v4(double_first_v4(strings));
 
 }
-
-// 18.5.3 
-use std::error;
-use std::fmt;
 type BoxResult<T> = std::result::Result<T, Box<dyn error::Error>>;
+
+// 18.5.4 
+
+fn double_first_v5(vec: Vec<&str>) -> BoxResult<i32> {
+    let first = vec.first().ok_or(EmptyVec)?;
+    let parsed = first.parse::<i32>()?;
+    Ok(2 *  parsed)
+
+}
+// 18.5.3 
+
+
 
 #[derive(Debug, Clone)]
 struct EmptyVec;
