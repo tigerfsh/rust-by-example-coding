@@ -70,9 +70,40 @@ fn main() {
     println!("The first doubled is {:?}", double_first_v2(numbers));
     println!("The first doubled is {:?}", double_first_v2(empty));
     println!("The first doubled is {:?}", double_first_v2(strings));
+
+    // 18.5.2 
+    // for result
+    // map -> ok to ok, leaving err 
+    // map_err -> err to err, leaving ok  
+    // ok_or: option to result 
+    let a: Result<i32, f32> = Ok(2);
+    let _b = a.map_err(|e| {e + 0.01});
+
     
 }
+// 18.5.2 
+// Defining an error type 
+use std::fmt;
+type MyResult<T> = std::result::Result<T, DoubleError>;
 
+#[derive(Debug, Clone)]
+struct DoubleError;
+
+impl fmt::Display for DoubleError {
+    fn fmt(&self, f: &mut fmt::Formatter<'_>) -> fmt::Result {
+        write!(f, "invalid first item to double")
+    }
+}
+
+fn double_first_v3(vec: Vec<&str>) -> MyResult<i32> {
+    vec.first()
+        .ok_or(DoubleError)
+        .and_then(|s| {
+            s.parse::<i32>()
+                .map_err(|_| DoubleError)
+                .map(|i| {2 * i})  
+        })
+}
 // 18.5.1 
 // map vs map_or vs map_or_else
 
