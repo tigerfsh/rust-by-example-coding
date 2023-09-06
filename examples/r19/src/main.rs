@@ -1,6 +1,8 @@
 use std::mem;
 
 fn main() {
+    // 19.1 
+
     let point = origin();
     let rectangle = Rectangle {
         top_left: origin(),
@@ -47,7 +49,49 @@ fn main() {
         "Unboxed point occupies {} bytes on the stack",
         mem::size_of_val(&unboxed_point)
     );
+
+    // 19.2 
+    let collected_iterator: Vec<i32> = (0..10).collect();
+    println!("collected_iterator: {:?}", collected_iterator);
+
+    let mut xs = vec![1i32, 2, 4];
+    println!("xs: {:?}", xs);
+
+    xs.push(4);
+    println!("xs: {:?}", xs);
+
+    println!("length of xs: {:?}", xs.len());
+
+    println!("Second element: {}", xs[1]);
+
+    println!("Pop: {:?}", xs.pop());
+
+    // println!("Fourth element: {}", xs[3]);
+
+    for x in xs.iter() {
+        println!("> {}", x);
+    }
+
+    for (i, x) in xs.iter().enumerate() {
+        println!("index: {}, value: {}", i, x);
+    }
+
+    for x in xs.iter_mut() {
+        *x = *x + 3;
+    }
+
+    println!("Updated vector: {:?}", xs);
+
+    for x in xs.into_iter() {
+        println!("> {}", x);
+    }
+
+    
+
 }
+// 19.2 Vector 
+
+// 19.1 Box 
 
 #[allow(dead_code)]
 #[derive(Debug, Clone, Copy)]
