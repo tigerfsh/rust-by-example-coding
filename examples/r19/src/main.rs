@@ -1,7 +1,7 @@
 use std::mem;
 
 fn main() {
-    // 19.1 
+    // 19.1
 
     let point = origin();
     let rectangle = Rectangle {
@@ -50,7 +50,7 @@ fn main() {
         mem::size_of_val(&unboxed_point)
     );
 
-    // 19.2 
+    // 19.2
     let collected_iterator: Vec<i32> = (0..10).collect();
     println!("collected_iterator: {:?}", collected_iterator);
 
@@ -82,16 +82,48 @@ fn main() {
 
     println!("Updated vector: {:?}", xs);
 
+    // xs can not be used after this.
     for x in xs.into_iter() {
         println!("> {}", x);
     }
 
-    
+    // 19.3 strings
+    let a = "apple";
 
+    let pangram: &'static str = "我 aaa bbb ccc ddd eee fff";
+    for word in pangram.split_whitespace() {
+        println!("> {}", word);
+    }
+
+    let mut chars: Vec<char> = pangram.chars().collect();
+    chars.sort();
+    // duplication: 重复
+    chars.dedup();
+
+    println!("chars: {:?}", chars);
+
+    let mut string = String::new();
+    for c in chars {
+        string.push(c);
+        string.push_str(", ");
+    }
+    println!("string: {:?}", string);
+
+    let chars_to_trim: &[char] = &[' ', ','];
+    let trimed_str = string.trim_matches(chars_to_trim);
+    println!("trimed_str: {:?}", trimed_str);
+
+    let alice = String::from("I like dogs");
+    let bob = alice.replace("dog", "cat");
+
+    println!("Alice: {}", alice);
+    println!("Bob: {}", bob);
 }
-// 19.2 Vector 
+// 19.3
 
-// 19.1 Box 
+// 19.2 Vector
+
+// 19.1 Box
 
 #[allow(dead_code)]
 #[derive(Debug, Clone, Copy)]
