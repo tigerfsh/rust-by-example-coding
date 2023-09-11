@@ -1,5 +1,7 @@
+use core::num;
 use std::mem;
 use std::str;
+use std::collections::HashMap;
 
 fn main() {
     // 19.1
@@ -183,7 +185,36 @@ fn main() {
         Err(e) => println!("Conversion failed: {:?}", e),
     };
     
+    // 19.7 HashMap
+    let mut contacts = HashMap::new();
+    contacts.insert("A", "100");
+    contacts.insert("B", "200");
+    contacts.insert("C", "300");
+
+    match contacts.get(&"100") {
+        Some(&number) => println!("Calling 100: {}", call(number)),
+        _ => println!("not 100.")
+    }
+
+    contacts.remove(&"A");
+
+    for (&k, &v) in contacts.iter() {
+        println!("k: {:?}, v: {:?}", k, v);
+    }
 }
+// 19.7 HashMap 
+fn call(number: &str) -> &str {
+    match  number {
+        "100" => "100",
+        "200" => "200",
+        _ => "ignore ..."
+    }
+}
+// 19.6 panic! (省略)
+// 19.5.1 ? (省略)
+// 19.5 Result (省略)
+// 19.4 Option (省略)
+
 // 19.3
 
 // 19.2 Vector
