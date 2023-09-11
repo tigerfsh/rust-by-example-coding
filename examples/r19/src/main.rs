@@ -5,6 +5,10 @@ use std::collections::HashSet;
 use std::mem;
 use std::str;
 
+use std::time::Duration;
+use std::sync::Arc;
+use std::thread;
+
 fn main() {
     // 19.1
 
@@ -261,6 +265,18 @@ fn main() {
 
         println!("--- rc_a is dropped out of scope ---");
     }
+
+    // 19.9 Arc(Atomically Reference Counted)
+    let apple = Arc::new("the same apple");
+    for _ in 0..10 {
+        let apple = Arc::clone(&apple);
+        thread::spawn(move || {
+            println!("{:?}", apple);
+        });
+    }
+
+    thread::sleep(Duration::from_secs(5));
+
 }
 
 // 19.7.2 HashSet
