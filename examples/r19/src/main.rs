@@ -2,6 +2,7 @@ use core::num;
 use std::mem;
 use std::str;
 use std::collections::HashMap;
+use std::collections::HashSet;
 
 fn main() {
     // 19.1
@@ -201,7 +202,42 @@ fn main() {
     for (&k, &v) in contacts.iter() {
         println!("k: {:?}, v: {:?}", k, v);
     }
+    // 19.7.2 
+    let mut a: HashSet<i32> = vec![1, 2, 3].into_iter().collect();
+    let mut b: HashSet<i32> = vec![2, 3, 4].into_iter().collect();
+
+    assert!(a.insert(4));
+    assert!(a.contains(&4));
+
+    // assert!(b.insert(4), "Value 4 is already in set B");
+    println!("A: {:?}", a);
+    println!("B: {:?}", b);
+
+    
+    let union_collection = a.union(&b).collect::<Vec<&i32>>();
+    println!("Union: {:?}", union_collection);
+
+    let difference_collection = a.difference(&b).collect::<Vec<&i32>>();
+    println!("Difference: {:?}", difference_collection);
+
+    // Print [2, 3, 4] in arbitrary order.
+    println!("Intersection: {:?}", a.intersection(&b).collect::<Vec<&i32>>());
+
+    // Print [1, 5]
+    println!("Symmetric Difference: {:?}",
+             a.symmetric_difference(&b).collect::<Vec<&i32>>());
+
 }
+
+// 19.7.2 HashSet 
+// in actuality, just a wrapper around HashMap<T, ()>).
+
+// 19.7.1 
+/*
+Any type that implements the Eq and Hash traits can be a key in HashMap. 
+Note that f32 and f64 do not implement Hash, likely because floating-point precision errors would make using them as hashmap keys horribly error-prone.
+
+*/
 // 19.7 HashMap 
 fn call(number: &str) -> &str {
     match  number {
