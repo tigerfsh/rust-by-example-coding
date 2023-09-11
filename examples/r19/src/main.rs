@@ -1,8 +1,9 @@
-use core::num;
-use std::mem;
-use std::str;
+use std::rc::Rc;
+
 use std::collections::HashMap;
 use std::collections::HashSet;
+use std::mem;
+use std::str;
 
 fn main() {
     // 19.1
@@ -129,9 +130,11 @@ fn main() {
 
     let unicode_codepoint = "\u{211D}";
     let character_name = "\"apple\"";
-    
-    println!("Unicode character {} (U+211D) is called {}",
-        unicode_codepoint, character_name);
+
+    println!(
+        "Unicode character {} (U+211D) is called {}",
+        unicode_codepoint, character_name
+    );
 
     let long_string = "AAAAA
                             BBBBBB.
@@ -139,7 +142,7 @@ fn main() {
                             <- can be escaped too!";
     println!("{}", long_string);
 
-    // raw string 
+    // raw string
     let raw_str = r"Escapes don't work here: \x3F \u{211D}";
     println!("{}", raw_str);
 
@@ -164,7 +167,6 @@ fn main() {
     // let escaped = b"\u{211D} is not allowed";
     println!("Some escaped bytes: {:?}", escaped);
 
-
     // Raw byte strings work just like raw strings
     let raw_bytestring = br"\u{211D} is not escaped here";
     println!("{:?}", raw_bytestring);
@@ -185,7 +187,7 @@ fn main() {
         Ok(my_str) => println!("Conversion successful: '{}'", my_str),
         Err(e) => println!("Conversion failed: {:?}", e),
     };
-    
+
     // 19.7 HashMap
     let mut contacts = HashMap::new();
     contacts.insert("A", "100");
@@ -194,7 +196,7 @@ fn main() {
 
     match contacts.get(&"100") {
         Some(&number) => println!("Calling 100: {}", call(number)),
-        _ => println!("not 100.")
+        _ => println!("not 100."),
     }
 
     contacts.remove(&"A");
@@ -202,7 +204,7 @@ fn main() {
     for (&k, &v) in contacts.iter() {
         println!("k: {:?}, v: {:?}", k, v);
     }
-    // 19.7.2 
+    // 19.7.2
     let mut a: HashSet<i32> = vec![1, 2, 3].into_iter().collect();
     let mut b: HashSet<i32> = vec![2, 3, 4].into_iter().collect();
 
@@ -213,7 +215,6 @@ fn main() {
     println!("A: {:?}", a);
     println!("B: {:?}", b);
 
-    
     let union_collection = a.union(&b).collect::<Vec<&i32>>();
     println!("Union: {:?}", union_collection);
 
@@ -221,29 +222,62 @@ fn main() {
     println!("Difference: {:?}", difference_collection);
 
     // Print [2, 3, 4] in arbitrary order.
-    println!("Intersection: {:?}", a.intersection(&b).collect::<Vec<&i32>>());
+    println!(
+        "Intersection: {:?}",
+        a.intersection(&b).collect::<Vec<&i32>>()
+    );
 
     // Print [1, 5]
-    println!("Symmetric Difference: {:?}",
-             a.symmetric_difference(&b).collect::<Vec<&i32>>());
+    println!(
+        "Symmetric Difference: {:?}",
+        a.symmetric_difference(&b).collect::<Vec<&i32>>()
+    );
 
+    // 19.8 Rc
+    let rc_example = "Rc example".to_string();
+    {
+        println!("rc_a is created.");
+
+        let rc_a: Rc<String> = Rc::new(rc_example);
+        println!("Ref count of rc_a: {}", Rc::strong_count(&rc_a));
+        {
+            println!("rc_a is cloned to rc_b");
+
+            let rc_b: Rc<String> = Rc::clone(&rc_a);
+
+            println!("Reference Count of rc_b: {}", Rc::strong_count(&rc_b));
+            println!("Reference Count of rc_a: {}", Rc::strong_count(&rc_a));
+
+            // Two `Rc`s are equal if their inner values are equal
+            println!("rc_a and rc_b are equal: {}", rc_a.eq(&rc_b));
+
+            // We can use methods of a value directly
+            println!("Length of the value inside rc_a: {}", rc_a.len());
+            println!("Value of rc_b: {}", rc_b);
+
+            println!("--- rc_b is dropped out of scope ---");
+        }
+        println!("Reference Count of rc_a: {}", Rc::strong_count(&rc_a));
+
+        println!("--- rc_a is dropped out of scope ---");
+    }
 }
 
-// 19.7.2 HashSet 
+// 19.7.2 HashSet
 // in actuality, just a wrapper around HashMap<T, ()>).
 
-// 19.7.1 
+// 19.7.1
 /*
-Any type that implements the Eq and Hash traits can be a key in HashMap. 
+Any type that implements the Eq and Hash traits can be a key in HashMap.
 Note that f32 and f64 do not implement Hash, likely because floating-point precision errors would make using them as hashmap keys horribly error-prone.
 
 */
-// 19.7 HashMap 
+// 19.7 HashMap
 fn call(number: &str) -> &str {
-    match  number {
+    match number {
         "100" => "100",
         "200" => "200",
-        _ => "ignore ..."
+        _ => "ignore ...",
     }
 }
 // 19.6 panic! (省略)
