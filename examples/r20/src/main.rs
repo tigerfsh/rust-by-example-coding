@@ -61,10 +61,10 @@ fn main() {
     Note that, although we're passing references across thread boundaries, 
     Rust understands that we're only passing read-only references, and 
     that thus no unsafety or data races can occur. Also because the references 
-    we're passing have 'static lifetimes<how to understand this?>, Rust understands that our data won't be destroyed 
-    while these threads are still running. (When you need to share non-static data 
-    between threads, you can use a smart pointer like Arc to keep the data alive 
-    and avoid non-static lifetimes.)
+    we're passing have 'static lifetimes<how to understand this?>, Rust understands 
+    that our data won't be destroyed while these threads are still running. 
+    (When you need to share non-static data between threads, you can use a smart 
+    pointer like Arc to keep the data alive and avoid non-static lifetimes.)
     */
     let data = "86967897737416471853297327050364959
 11861322575564723963297542624962850
