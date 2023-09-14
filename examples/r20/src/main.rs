@@ -4,6 +4,9 @@ use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use std::thread;
 
+use std::fs::File;
+use std::io::prelude::*;
+
 // static NTHREADS: i32 = 3;
 
 const NTHREADS: u32 = 10;
@@ -162,5 +165,20 @@ fn main() {
     match new_path.to_str() {
         None => panic!("new path is not a valid UTF-8 sequence."),
         Some(s) => println!("new path is {}", s),
+    }
+
+    // 20.4.1 open file
+    let path = Path::new("hello.txt");
+    let display = path.display();
+
+    let mut file = match File::open(&path) {
+        Err(why) => panic!("can not open {}: {}", display, why),
+        Ok(file) => file,
+    };
+
+    let mut s = String::new();
+    match file.read_to_string(&mut s) {
+        Err(why) => panic!("can not read {}: {}", display, why),
+        Ok(_) => println!("{} contains: \n{}", display, s),
     }
 }
