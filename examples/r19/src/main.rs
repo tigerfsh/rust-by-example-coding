@@ -5,9 +5,9 @@ use std::collections::HashSet;
 use std::mem;
 use std::str;
 
-use std::time::Duration;
 use std::sync::Arc;
 use std::thread;
+use std::time::Duration;
 
 fn main() {
     // 19.1
@@ -237,6 +237,16 @@ fn main() {
         a.symmetric_difference(&b).collect::<Vec<&i32>>()
     );
 
+    /*
+    In Rust, there are two main types of reference counting (RC) smart pointers:  `std::rc::Rc`  and  `std::sync::Arc` . Both are used for shared ownership of data, but they differ in their thread-safety guarantees.
+
+    `Rc`  is short for "reference counting" and provides shared ownership within a single thread. It keeps track of the number of references to a value and deallocates the value when the count reaches zero. However,  `Rc`  is not thread-safe and cannot be shared across multiple threads.
+
+    On the other hand,  `Arc`  stands for "atomic reference counting" and provides shared ownership that is safe to use across multiple threads. It uses atomic operations to ensure thread-safety and can be safely shared among different threads. However, this additional thread-safety comes with a slight performance overhead compared to  `Rc` .
+
+    In summary, if you need shared ownership within a single thread, you can use  `Rc` . But if you require shared ownership across multiple threads, you should use  `Arc` .
+    */
+
     // 19.8 Rc
     let rc_example = "Rc example".to_string();
     {
@@ -276,7 +286,6 @@ fn main() {
     }
 
     thread::sleep(Duration::from_secs(5));
-
 }
 
 // 19.7.2 HashSet
