@@ -42,6 +42,12 @@ fn main() {
         }));
     }
 
-    let final_result = children.into_iter().map(|c| c.join().unwrap()).sum::<u32>();
+    // we use the "turbofish" ::<> to provide sum() with a type hint.
+    // let final_result = children.into_iter().map(|c| c.join().unwrap()).sum::<u32>();
+    
+    // try without the turbofish, by instead explicitly
+    // specifying the type of final_result
+    let final_result: u32 = children.into_iter().map(|c| c.join().unwrap()).sum();
+    
     println!("Final sum result: {}", final_result);
 }
