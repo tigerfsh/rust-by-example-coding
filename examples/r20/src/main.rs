@@ -50,7 +50,7 @@ fn main() {
     // specifying the type of final_result
     let final_result: u32 = children.into_iter().map(|c| c.join().unwrap()).sum();
     
-    println!("Final sum result: {}", final_result);
+    println!("(A) Final sum result: {}", final_result);
 
     // 20.1.1 
     // Limit thread nums
@@ -64,9 +64,31 @@ fn main() {
 58495327135744041048897885734297812
 69920216438980873548808413720956532
 16278424637452589860345374828574668";
-
+    const NUM: usize = 2;
     
+    let chunked_data = data.split_whitespace();
+    let chunked_list: Vec<&str> = chunked_data.collect();
+    let mut final_result = 0;
 
-    
+    for i in (0..chunked_list.len()).step_by(NUM) {
+        let mut children = vec![];
+
+        let chunked_list = &chunked_list[i..(i+NUM)];
+        for &data_segment in chunked_list.iter() {
+            children.push(thread::spawn(move || -> u32 {
+                let result = data_segment
+                    .chars()
+                    .map(|c| c.to_digit(10).unwrap())
+                    .sum();
+                result
+
+            }));
+        }
+        let tmp_result: u32  = children.into_iter().map(|h| h.join().unwrap()).sum();
+        
+        final_result += tmp_result;
+    }
+    println!("(B) Final sum result: {}", final_result);
+
 }
  
