@@ -1,3 +1,4 @@
+use std::path::Path;
 use std::sync::mpsc;
 use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
@@ -140,4 +141,26 @@ fn main() {
     }
 
     println!("{:?}", ids);
+
+    // 20.3
+    let path = Path::new(".");
+
+    let _display = path.display();
+    println!("display: {:?}", _display);
+
+    let mut new_path = path.join("a").join("b");
+    println!("new path: {:?}", new_path);
+
+    new_path.push("c");
+    new_path.push("myfile.tar.gz");
+
+    println!("new path: {:?}", new_path);
+
+    new_path.set_file_name("package.tgz");
+    println!("set_file_name: {:?}", new_path);
+
+    match new_path.to_str() {
+        None => panic!("new path is not a valid UTF-8 sequence."),
+        Some(s) => println!("new path is {}", s),
+    }
 }
