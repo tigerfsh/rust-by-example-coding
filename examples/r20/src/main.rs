@@ -1,7 +1,15 @@
 use std::thread;
 use std::sync::Arc;
+use std::sync::mpsc::{Sender, Receiver};
+use std::sync::mpsc;
+
+// static NTHREADS: i32 = 3;
 
 const NTHREADS: u32 = 10;
+
+const PI: f32 = 3.1415926;
+
+static mut GLOBAL_COUNTER: i32 = 0;
 
 fn main() {
     // 20.1
@@ -99,6 +107,19 @@ fn main() {
         final_result += tmp_result;
     }
     println!("(B) Final sum result: {}", final_result);
+
+    // const vs static ?
+    // const: 不可变， 常量
+    // static:可变或者不可变，全局变量
+    println!("PI: {PI}");
+
+    unsafe {
+        GLOBAL_COUNTER += 1;
+        println!("GLOBAL_COUNTER: {GLOBAL_COUNTER}");
+    }
+    
+
+    // 20.2 channel
 
 }
  
