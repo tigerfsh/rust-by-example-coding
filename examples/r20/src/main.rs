@@ -7,6 +7,7 @@ use std::thread;
 use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::prelude::*;
+use std::fs::read_to_string;
 
 // static NTHREADS: i32 = 3;
 
@@ -201,6 +202,28 @@ fn main() {
         .open("lorem_ipsum.txt")
         .unwrap();
     file.write_all("AAABBBCCC\n".as_bytes()).unwrap();
+
+    // 20.4.3
+    
+
+
+}
+
+// 20.4.3 
+fn read_lines(filename: &str) -> Vec<String> {
+    let mut result = Vec::new();
+    for line in read_to_string(filename).unwrap().lines() {
+        result.push(line.to_string());
+    }
+    result
+}
+
+fn read_lines_v2(filename: &str) -> Vec<String> {
+    read_to_string(filename)
+        .unwrap()
+        .lines()
+        .map(String::from)
+        .collect()
 }
 
 static LOREM_IPSUM: &str =
