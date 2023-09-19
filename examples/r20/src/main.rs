@@ -12,6 +12,9 @@ use std::io::prelude::*;
 use std::io::{self};
 
 use std::process::Command;
+use std::process::Stdio;
+
+static PANGRAM: &'static str = "Welcome to Beijing\n";
 
 // static NTHREADS: i32 = 3;
 
@@ -230,6 +233,26 @@ fn main() {
     } else {
         let s = String::from_utf8_lossy(&output.stderr);
         println!("rustc failed and stderr was:\n{}", s);
+    }
+
+    let process = match Command::new("wc")
+        .stdin(Stdio::piped())
+        .stdout(Stdio::piped())
+        .spawn()
+    {
+        Err(why) => panic!("couldn't spawn wc: {}", why),
+        Ok(process) => process,
+    };
+
+    match process.stdin.unwrap().write_all(PANGRAM.as_bytes()) {
+        Ok(_) => println!("sent pangram to wc"),
+        Err(why) => panic!("couldn't write to wc stdio: {}", why),
+    }
+
+    let mut s = String::new();
+    match process.stdout.unwrap().read_to_string(&mut s) {
+        Err(why) => panic!("couldn't read wc stdout: {}", why),
+        Ok(_) => print!("wc responded with:\n{}", s),
     }
 }
 
