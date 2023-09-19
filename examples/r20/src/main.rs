@@ -256,12 +256,11 @@ fn main() {
         Ok(_) => print!("wc responded with:\n{}", s),
     }
 
-    // 20.5.2 wait 
+    // 20.5.2 wait
     let mut child = Command::new("sleep").arg("5").spawn().unwrap();
     let _result = child.wait().unwrap();
 
     println!("done.");
-
 }
 
 // 20.4.3
