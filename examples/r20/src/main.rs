@@ -4,10 +4,12 @@ use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use std::thread;
 
+use std::fs::read_to_string;
 use std::fs::File;
 use std::fs::OpenOptions;
 use std::io::prelude::*;
-use std::fs::read_to_string;
+
+use std::io::{self};
 
 // static NTHREADS: i32 = 3;
 
@@ -204,12 +206,17 @@ fn main() {
     file.write_all("AAABBBCCC\n".as_bytes()).unwrap();
 
     // 20.4.3
-    
 
-
+    if let Ok(lines) = read_lines_v3("./hello.txt") {
+        for line in lines {
+            if let Ok(ip) = line {
+                println!("{ip}");
+            }
+        }
+    }
 }
 
-// 20.4.3 
+// 20.4.3
 fn read_lines(filename: &str) -> Vec<String> {
     let mut result = Vec::new();
     for line in read_to_string(filename).unwrap().lines() {
@@ -224,6 +231,15 @@ fn read_lines_v2(filename: &str) -> Vec<String> {
         .lines()
         .map(String::from)
         .collect()
+}
+
+fn read_lines_v3<P>(filename: P) -> io::Result<io::Lines<io::BufReader<File>>>
+where
+    P: AsRef<Path>,
+{
+    let file = File::open(filename)?;
+    let res = Ok(io::BufReader::new(file).lines());
+    res
 }
 
 static LOREM_IPSUM: &str =
