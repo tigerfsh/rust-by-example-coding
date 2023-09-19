@@ -235,7 +235,7 @@ fn main() {
         println!("rustc failed and stderr was:\n{}", s);
     }
 
-    // Is the process a running process ? if so, why it does not exist?
+    // run wc command, and you will understand.
     let process = match Command::new("wc")
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
@@ -255,6 +255,13 @@ fn main() {
         Err(why) => panic!("couldn't read wc stdout: {}", why),
         Ok(_) => print!("wc responded with:\n{}", s),
     }
+
+    // 20.5.2 wait 
+    let mut child = Command::new("sleep").arg("5").spawn().unwrap();
+    let _result = child.wait().unwrap();
+
+    println!("done.");
+
 }
 
 // 20.4.3
