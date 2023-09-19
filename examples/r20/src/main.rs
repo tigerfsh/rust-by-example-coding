@@ -235,6 +235,7 @@ fn main() {
         println!("rustc failed and stderr was:\n{}", s);
     }
 
+    // Is the process a running process ? if so, why it does not exist?
     let process = match Command::new("wc")
         .stdin(Stdio::piped())
         .stdout(Stdio::piped())
