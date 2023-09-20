@@ -329,6 +329,10 @@ fn main() {
     let args: Vec<String> = env::args().collect();
     println!("My path is {}", args[0]);
     println!("I got {:?} arguments: {:?}", args.len()-1, &args[1..]);
+
+    // 20.8
+    // FFI pass 
+    
 }
 
 // 20.4.3
