@@ -25,4 +25,7 @@ fn main() {
         let my_slice: &[u32] = slice::from_raw_parts(pointer, length);
         assert_eq!(some_vector.as_slice(), my_slice);
     }
+
+    // 22.1 
+    // pass 
 }
