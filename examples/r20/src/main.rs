@@ -4,6 +4,7 @@ use std::sync::mpsc::{Receiver, Sender};
 use std::sync::Arc;
 use std::thread;
 
+use std::env;
 use std::fs;
 use std::fs::read_to_string;
 use std::fs::File;
@@ -324,6 +325,10 @@ fn main() {
         println!("! {:?}", why.kind());
     });
 
+    // 20.7
+    let args: Vec<String> = env::args().collect();
+    println!("My path is {}", args[0]);
+    println!("I got {:?} arguments: {:?}", args.len()-1, &args[1..]);
 }
 
 // 20.4.3
