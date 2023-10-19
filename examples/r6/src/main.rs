@@ -71,6 +71,11 @@ impl FromStr for Point {
         })
     }
 }
+
+fn transformer(a: impl Into<Number>) -> Number{
+    a.into()
+}
+
 fn main() {
     let my_str = "hello";
     let my_string = String::from(my_str);
@@ -83,6 +88,9 @@ fn main() {
     let int = 5;
     let num: Number = int.into();
     println!("My number is {:?}", num);
+
+    let my_num = transformer(int);
+    println!("Hi, my num is {:?}", my_num);
 
     // TryFrom and TryInto
 
