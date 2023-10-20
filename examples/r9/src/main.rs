@@ -24,6 +24,9 @@ struct Rectangle {
 
 impl Rectangle {
     fn area(&self) -> f64 {
+        // This is a method
+        // `&self` is sugar for `self: &Self`, where `Self` is the type of the
+        // caller object. In this case `Self` = `Rectangle`
         let Point { x: x1, y: y1 } = self.p1;
         let Point { x: x2, y: y2 } = self.p2;
 
