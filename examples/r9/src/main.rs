@@ -41,6 +41,8 @@ impl Rectangle {
     }
 
     // &mut self -> `self: &mut Self`
+    // This method requires the caller object to be mutable
+    // `&mut self` desugars to `self: &mut Self`
     fn translate(&mut self, x: f64, y: f64) {
         self.p1.x += x;
         self.p2.x += x;
