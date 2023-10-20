@@ -4,7 +4,7 @@ struct Point {
 }
 
 impl Point {
-    // associated functions
+    // associated functions (not method)
     fn origin() -> Point {
         Point { x: 0.0, y: 0.0 }
     }
@@ -13,6 +13,9 @@ impl Point {
         Point { x: x, y: y }
     }
 }
+
+// call associated function, for example:
+// let res = Point::origin();
 
 struct Rectangle {
     p1: Point,
